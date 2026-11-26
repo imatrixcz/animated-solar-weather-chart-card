@@ -77,5 +77,5 @@
   }
   customElements.define('weather-solar-chart-card', WeatherSolarChartCard);
   window.customCards = window.customCards || [];
-  window.customCards.push({ type: 'weather-solar-chart-card', name: 'Počasí a solární předpověď', description: 'Weather Chart Card s bílou denní solární předpovědí v kWh.' });
+  window.customCards.push({ type: 'weather-solar-chart-card', name: 'Animated Solar Weather Chart Card (line)', description: 'Weather chart card with the daily solar forecast (kWh) drawn as a line.' });
 })();

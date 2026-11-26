@@ -120,4 +120,6 @@
     }
   }
   customElements.define('weather-solar-dots-card', WeatherSolarChartCard);
+  window.customCards = window.customCards || [];
+  window.customCards.push({ type: 'weather-solar-dots-card', name: 'Animated Solar Weather Chart Card (dots)', description: 'Weather chart card with 1-5 dots per day by the daily solar forecast.' });
 })();

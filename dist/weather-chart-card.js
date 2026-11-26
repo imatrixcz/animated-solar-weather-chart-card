@@ -19172,7 +19172,7 @@ window.customCards.push({
   name: "Weather Chart Card",
   description: "A custom weather card with chart.",
   preview: true,
-  documentationURL: "https://github.com/imatrixcz/weather-chart-card",
+  documentationURL: "https://github.com/imatrixcz/animated-solar-weather-chart-card",
 });
 
 /* Solar forecast line extension for weather-chart-card (imatrixcz fork). */
@@ -19254,7 +19254,7 @@ window.customCards.push({
   }
   customElements.define('weather-solar-chart-card', WeatherSolarChartCard);
   window.customCards = window.customCards || [];
-  window.customCards.push({ type: 'weather-solar-chart-card', name: 'Počasí a solární předpověď', description: 'Weather Chart Card s bílou denní solární předpovědí v kWh.' });
+  window.customCards.push({ type: 'weather-solar-chart-card', name: 'Animated Solar Weather Chart Card (line)', description: 'Weather chart card with the daily solar forecast (kWh) drawn as a line.' });
 })();
 
 /* Solar forecast dots extension for weather-chart-card (imatrixcz fork). */
@@ -19379,4 +19379,6 @@ window.customCards.push({
     }
   }
   customElements.define('weather-solar-dots-card', WeatherSolarChartCard);
+  window.customCards = window.customCards || [];
+  window.customCards.push({ type: 'weather-solar-dots-card', name: 'Animated Solar Weather Chart Card (dots)', description: 'Weather chart card with 1-5 dots per day by the daily solar forecast.' });
 })();

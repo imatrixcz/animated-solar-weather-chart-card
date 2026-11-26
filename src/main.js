@@ -1397,7 +1397,7 @@ window.customCards.push({
   name: "Weather Chart Card",
   description: "A custom weather card with chart.",
   preview: true,
-  documentationURL: "https://github.com/imatrixcz/weather-chart-card",
+  documentationURL: "https://github.com/imatrixcz/animated-solar-weather-chart-card",
 });
 
 import './solar-chart-card.js';
