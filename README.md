@@ -1,43 +1,95 @@
-# Weather Chart Card – imatrixcz fork
+# Weather Chart Card (imatrixcz)
 
-The original project by mlamberts78 was deprecated by its owner. This fork is maintained by imatrixcz and adds two extra cards, bundled in the same file:
+[![GitHub release](https://img.shields.io/github/v/release/imatrixcz/weather-chart-card?style=flat-square)](https://github.com/imatrixcz/weather-chart-card/releases/latest)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE.md)
 
-- `custom:weather-solar-dots-card` – shows 1–5 dots under each forecast day based on the daily solar forecast (kWh). Options: `solar_entities` (list of daily forecast sensors in kWh with a `watts` attribute, e.g. Forecast.Solar), `solar_thresholds` (default `[10, 20, 30, 50]`).
-- `custom:weather-solar-chart-card` – draws the daily solar forecast as a dashed white line in the chart. Option: `solar_entities`.
+A weather card with a forecast chart for Home Assistant – with an extra **daily solar forecast**.
 
-Both accept all regular weather-chart-card options.
+This is a maintained fork of [mlamberts78/weather-chart-card](https://github.com/mlamberts78/weather-chart-card), which its author has deprecated. The original card works exactly as before; this fork adds two cards that show how much energy your solar panels are expected to produce each day.
 
-Install via Home Assistant Marketplace / HACS: add `https://github.com/imatrixcz/weather-chart-card` as a custom repository (Dashboard / Lovelace).
+| `weather-solar-dots-card` | `weather-solar-chart-card` |
+| :---: | :---: |
+| ![Solar dots](images/solar-dots.png) | ![Solar line](images/solar-line.png) |
+| 1–5 dots under each day, click a day for the exact kWh | dashed white line with kWh in the chart |
 
----
+## Cards in this package
 
-<h1 align="center">Weather Chart Card</h1>
+All three cards are in one file (`weather-chart-card.js`), so one installation is enough.
 
-# No Longer Maintained
-This repository is no longer maintained. Feel free to fork it if you find it useful.
-
-[![Buy me a coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/mlamberts7I)
-[![PayPal](https://img.shields.io/badge/Donate-PayPal-blue?logo=paypal)](https://www.paypal.com/donate/?hosted_button_id=HZUUW64FRM2J2)
-
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/mlamberts78/weather-chart-card?style=flat-square)](https://github.com/mlamberts78/weather-chart-card/releases/latest)
-![GitHub downloads](https://img.shields.io/github/downloads/mlamberts78/weather-chart-card/total?style=flat-square)
-![GitHub release (latest by SemVer including pre-releases)](https://img.shields.io/github/downloads/mlamberts78/weather-chart-card/latest/total)
-[![HACS Validate](https://github.com/mlamberts78/weather-chart-card/actions/workflows/validate.yaml/badge.svg)](https://github.com/mlamberts78/weather-chart-card/actions/workflows/validate.yaml)
-
-![weather-chart-card](https://github.com/mlamberts78/weather-chart-card/assets/93537082/bd5b9f6e-4125-4a19-9773-463e6d054bce)
-![15-days](https://github.com/mlamberts78/weather-chart-card/assets/93537082/f4de6060-7005-4a6d-b1f3-3aa17c856c73)
+| Card | What it shows |
+| --- | --- |
+| `custom:weather-chart-card` | The original weather card with chart. |
+| `custom:weather-solar-dots-card` | Weather card + 1–5 dots per day by expected solar production. |
+| `custom:weather-solar-chart-card` | Weather card + daily solar forecast drawn as a line in the chart. |
 
 ## Installation
 
-### HACS
+### Home Assistant Marketplace (or HACS)
 
-This card is available in HACS (Home Assistant Community Store).
-HACS is a third party community store and is not included in Home Assistant out of the box.
+1. Open **Marketplace** (or HACS) → **Add from link** / **Custom repositories**.
+2. Enter `https://github.com/imatrixcz/weather-chart-card` (type *Dashboard* / *Lovelace*).
+3. Install **Weather Chart Card (imatrixcz)**. The dashboard resource is added automatically.
 
-#### Configuration variables:
+If you used the original card, uninstall it first – both install into the same `weather-chart-card` folder.
 
-##### Card options
+### Manual
+
+Copy `dist/weather-chart-card.js` (and the `icons`, `icons2` folders for animated icons) to `/config/www/weather-chart-card/` and add `/local/weather-chart-card/weather-chart-card.js` as a JavaScript module resource.
+
+## Solar forecast
+
+Both solar cards accept every option of `weather-chart-card` plus:
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `solar_entities` | list | **Required** | Sensors with the energy forecast for one day each, in **kWh**, with a `watts` attribute (timestamps of that day). Works with the [Open-Meteo Solar Forecast](https://github.com/rany2/ha-open-meteo-solar-forecast) and Forecast.Solar integrations (`sensor.energy_production_today`, `…_tomorrow`, `…_d2` … `…_d7`). |
+| `solar_thresholds` | list | `[10, 20, 30, 50]` | *Dots card only.* kWh limits for 2, 3, 4 and 5 dots. 0 kWh = no dot, below the first limit = 1 dot. Tune them to your installation size. |
+
+The day of each sensor is taken from its `watts` attribute, so sensors may be listed in any order and missing days are simply left empty.
+
+### Example – dots
+
+```yaml
+type: custom:weather-solar-dots-card
+entity: weather.forecast_home
+animated_icons: true
+icon_style: style2
+forecast:
+  style: style2
+  round_temp: true
+solar_thresholds: [10, 20, 30, 50]
+solar_entities:
+  - sensor.energy_production_today
+  - sensor.energy_production_tomorrow
+  - sensor.energy_production_d2
+  - sensor.energy_production_d3
+  - sensor.energy_production_d4
+  - sensor.energy_production_d5
+  - sensor.energy_production_d6
+  - sensor.energy_production_d7
+```
+
+### Example – line
+
+```yaml
+type: custom:weather-solar-chart-card
+entity: weather.forecast_home
+solar_entities:
+  - sensor.energy_production_today
+  - sensor.energy_production_tomorrow
+  - sensor.energy_production_d2
+  - sensor.energy_production_d3
+  - sensor.energy_production_d4
+  - sensor.energy_production_d5
+  - sensor.energy_production_d6
+  - sensor.energy_production_d7
+```
+
+## Weather card options
+
+These options work in all three cards.
+
+### Card options
 
 | Name                  | Type    | Default                  | Description                                                                                        |
 | ----------------------| ------- | -------------------------|--------------------------------------------------------------------------------------------------- |
@@ -87,7 +139,7 @@ HACS is a third party community store and is not included in Home Assistant out 
 | locale                | string  | none                     | See [Supported languages](#Supported-languages) for available languages                            |
 | autoscroll            | boolean | false                    | Update the chart each hour, hiding prior forecast datapoints                                       |
 
-##### Forecast options
+### Forecast options
 
 | Name                 | Type    | Default                  | Description                                                                                        |
 | -------------------- | ------- | -------------------------|--------------------------------------------------------------------------------------------------- |
@@ -109,43 +161,24 @@ HACS is a third party community store and is not included in Home Assistant out 
 | number_of_forecasts  | number  | 0                        | Overrides the number of forecasts to display. Set to "0" for automatic mode.                       |
 | disable_animation    | boolean | false                    | Disable the chart animation.                                                                       |
 
-##### Units of measurement
+### Units of measurement
 
 | Name                 | Type    | Default                  | Description                                                                                        |
 | -------------------- | ------- | -------------------------|--------------------------------------------------------------------------------------------------- |
 | pressure             | string  | none                     | Convert to 'hPa' or 'mmHg' or 'inHg'                                                               |
 | speed                | string  | none                     | Convert to 'km/h' or 'm/s' or 'Bft' or 'mph'                                                       |
 
-###### What custom icons can I use?
-Icons should be in svg format. Icons should have names as shown [here](https://github.com/mlamberts78/weather-chart-card/blob/master/src/const.js#L24). Example:
-![130360372-76d70c42-986c-46e3-b9b5-810f0317f94f](https://github.com/mlamberts78/weather-chart-card/assets/93537082/d3ee55a2-e64f-4354-b36d-9faf6ea37361)
+### Custom icons
 
-#### Example usage:
-###### Card with current time, date and day
-![date-time](https://github.com/mlamberts78/weather-chart-card/assets/93537082/ab2c32f7-8c6a-4a7e-84fc-f857a519a725)
-```yaml
-type: custom:weather-chart-card
-entity: weather.weather_home
-show_time: true
-show_day: true
-show_date: true
-animated_icons: true
-icon_style: style1
+Icons must be SVG files named after the weather conditions listed in [`src/const.js`](src/const.js). Set `icons: /local/weather-icons/`.
 
-```
-###### Style2 chart
-![style2](https://github.com/mlamberts78/weather-chart-card/assets/93537082/3067cc43-0e80-492c-b4a5-771b1e44ea17)
+### More examples
+
+Chart only:
+
 ```yaml
 type: custom:weather-chart-card
-entity: weather.my_home
-forecast:
-  style: style2
-```
-###### Chart only
-![Chart-only](https://github.com/mlamberts78/weather-chart-card/assets/93537082/c99d85a4-30d1-4fd9-90ff-877421b39e9b)
-```yaml
-type: custom:weather-chart-card
-entity: weather.my_home
+entity: weather.forecast_home
 show_main: false
 show_attributes: false
 forecast:
@@ -153,17 +186,19 @@ forecast:
   show_wind_forecast: false
 ```
 
-###### Custom units
-![Units](https://github.com/mlamberts78/weather-chart-card/assets/93537082/e72862ee-9bb7-4f97-9a3c-b17663c458aa)
+Hourly forecast with custom units:
+
 ```yaml
 type: custom:weather-chart-card
-entity: weather.my_home
+entity: weather.forecast_home
+forecast:
+  type: hourly
 units:
-  pressure: mmHg
+  pressure: hPa
   speed: m/s
 ```
 
-###### Supported languages:
+### Supported languages
 | Language         | Locale  |
 | ---------------- | ------- |
 | Bulgarian        | bg      |
@@ -189,3 +224,7 @@ units:
 | Swedish          | sv      |
 | Ukrainian        | uk      |
 | 한국어           | ko      |
+
+## Credits
+
+Original card by [Marc Lamberts (mlamberts78)](https://github.com/mlamberts78/weather-chart-card), MIT license. Solar forecast cards and maintenance by [imatrixcz](https://github.com/imatrixcz).
