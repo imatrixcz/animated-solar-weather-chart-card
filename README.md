@@ -7,8 +7,6 @@
 
 An animated weather card with a forecast chart for Home Assistant – with an extra **daily solar forecast**.
 
-![Animated Solar Weather Chart Card](images/preview.gif)
-
 This is a maintained fork of [mlamberts78/weather-chart-card](https://github.com/mlamberts78/weather-chart-card), which its author has deprecated. The original card works exactly as before; this fork adds two cards that show how much energy your solar panels are expected to produce each day.
 
 | `weather-solar-dots-card` | `weather-solar-chart-card` |
