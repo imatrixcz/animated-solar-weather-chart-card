@@ -955,6 +955,40 @@ updateChart({ forecasts, forecastChart } = this) {
           margin-top: 5px;
           font-weight: 400;
         }
+        .card.grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          column-gap: 8px;
+          padding-top: ${config.title ? '0px' : '10px'};
+        }
+        .card.grid > * { grid-column: 1 / -1; }
+        .card.grid > .main {
+          grid-column: 1;
+          grid-row: 1;
+          margin-bottom: 0;
+          align-self: center;
+        }
+        .card.grid .main img {
+          width: 64px;
+          height: 64px;
+          margin-inline-end: 8px;
+        }
+        .card.grid > .attributes {
+          grid-column: 2;
+          grid-row: 1;
+          display: grid;
+          grid-template-columns: auto auto;
+          grid-auto-rows: 22px;
+          align-self: center;
+          align-items: center;
+          column-gap: 12px;
+          row-gap: 0;
+          margin: 0;
+          line-height: 22px;
+          font-size: 12px;
+        }
+        .card.grid .attributes .attr { white-space: nowrap; }
+        .card.grid .attributes ha-icon { --mdc-icon-size: 19px; }
         .updated {
           font-size: 13px;
           align-items: right;
@@ -964,7 +998,7 @@ updateChart({ forecasts, forecastChart } = this) {
       </style>
 
       <ha-card header="${config.title}">
-        <div class="card">
+        <div class="card ${config.attributes_layout === 'grid' ? 'grid' : ''}">
           ${this.renderMain()}
           ${this.renderAttributes()}
           <div class="chart-container">
@@ -1141,6 +1175,9 @@ renderAttributes({ config, humidity, pressure, windSpeed, windDirection, sun, la
   if (config.show_attributes == false)
     return html``;
 
+  if (config.attributes_layout === 'grid')
+    return this.renderAttributesGrid({ config, humidity, dPressure, dWindSpeed, windDirection, sun, language, uv_index, dew_point, wind_gust_speed, visibility });
+
   const showHumidity = config.show_humidity !== false;
   const showPressure = config.show_pressure !== false;
   const showWindDirection = config.show_wind_direction !== false;
@@ -1199,6 +1236,27 @@ return html`
       ` : ''}
     </div>
 `;
+}
+
+renderAttributesGrid({ config, humidity, dPressure, dWindSpeed, windDirection, sun, language, uv_index, dew_point, wind_gust_speed, visibility }) {
+  const tf = { hour12: config.use_12hour_format, hour: 'numeric', minute: 'numeric' };
+  const su = this.ll('units')[this.unitSpeed] || this.weather.attributes.wind_speed_unit || '';
+  const pu = this.ll('units')[this.unitPressure] || this.weather.attributes.pressure_unit || '';
+  const ws = isNaN(Number(dWindSpeed)) ? dWindSpeed : Math.round(Number(dWindSpeed));
+  const items = [];
+  const showSun = config.show_sun !== false && sun !== undefined;
+  const add = (cond, icon, text) => { if (cond) items.push(html`<div class="attr"><ha-icon icon="${icon}"></ha-icon> ${text}</div>`); };
+  add(showSun, 'mdi:weather-sunset-up', showSun ? new Date(sun.attributes.next_rising).toLocaleTimeString(language, tf) : '');
+  add(config.show_humidity !== false && humidity !== undefined, 'hass:water-percent', `${humidity} %`);
+  add(showSun, 'mdi:weather-sunset-down', showSun ? new Date(sun.attributes.next_setting).toLocaleTimeString(language, tf) : '');
+  add(config.show_wind_speed !== false && dWindSpeed !== undefined, 'hass:weather-windy', `${ws} ${su}`);
+  add(config.show_pressure !== false && dPressure !== undefined, 'hass:gauge', `${dPressure} ${pu}`);
+  add(config.show_wind_direction !== false && windDirection !== undefined, `hass:${this.getWindDirIcon(windDirection)}`, this.getWindDir(windDirection));
+  add(config.show_wind_gust_speed == true && wind_gust_speed !== undefined, 'hass:weather-windy-variant', `${wind_gust_speed} ${su}`);
+  add(config.show_dew_point == true && dew_point !== undefined, 'hass:thermometer-water', `${dew_point} ${this.weather.attributes.temperature_unit}`);
+  add(config.show_visibility == true && visibility !== undefined, 'hass:eye', `${visibility} ${this.weather.attributes.visibility_unit}`);
+  add(config.show_uv === true && uv_index !== undefined, 'hass:white-balance-sunny', `UV: ${Math.round(uv_index * 10) / 10}`);
+  return html`<div class="attributes">${items}</div>`;
 }
 
 renderSun({ sun, language, config } = this) {

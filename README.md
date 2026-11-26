@@ -13,7 +13,7 @@ This is a maintained fork of [mlamberts78/weather-chart-card](https://github.com
 
 | `weather-solar-dots-card` | `weather-solar-chart-card` |
 | :---: | :---: |
-| ![Solar dots](images/solar-dots.png) | ![Solar line](images/solar-line.png) |
+| ![Solar dots](images/solar-dots.gif) | ![Solar line](images/solar-line.gif) |
 | 1–5 dots under each day, click a day for the exact kWh | dashed white line with kWh in the chart |
 
 ## Cards in this package
@@ -54,6 +54,8 @@ Both solar cards accept every option of `weather-chart-card` plus:
 | --- | --- | --- | --- |
 | `solar_entities` | list | **Required** | Sensors with the energy forecast for one day each, in **kWh**, with a `watts` attribute (timestamps of that day). Works with the [Open-Meteo Solar Forecast](https://github.com/rany2/ha-open-meteo-solar-forecast) and Forecast.Solar integrations (`sensor.energy_production_today`, `…_tomorrow`, `…_d2` … `…_d7`). |
 | `solar_thresholds` | list | `[10, 20, 30, 50]` | *Dots card only.* kWh limits for 2, 3, 4 and 5 dots. 0 kWh = no dot, below the first limit = 1 dot. Tune them to your installation size. |
+| `attributes_layout` | string | `grid` | `grid` = compact 2×2 block next to the temperature (sunrise + humidity / sunset + wind, extra attributes follow). `classic` = original layout of weather-chart-card. |
+| `show_uv` | boolean | `false` | Show the UV index in the `grid` layout. |
 
 The day of each sensor is taken from its `watts` attribute, so sensors may be listed in any order and missing days are simply left empty.
 
