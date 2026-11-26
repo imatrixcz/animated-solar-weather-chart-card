@@ -1,3 +1,16 @@
+# Weather Chart Card – imatrixcz fork
+
+The original project by mlamberts78 was deprecated by its owner. This fork is maintained by imatrixcz and adds two extra cards, bundled in the same file:
+
+- `custom:weather-solar-dots-card` – shows 1–5 dots under each forecast day based on the daily solar forecast (kWh). Options: `solar_entities` (list of daily forecast sensors in kWh with a `watts` attribute, e.g. Forecast.Solar), `solar_thresholds` (default `[10, 20, 30, 50]`).
+- `custom:weather-solar-chart-card` – draws the daily solar forecast as a dashed white line in the chart. Option: `solar_entities`.
+
+Both accept all regular weather-chart-card options.
+
+Install via Home Assistant Marketplace / HACS: add `https://github.com/imatrixcz/weather-chart-card` as a custom repository (Dashboard / Lovelace).
+
+---
+
 <h1 align="center">Weather Chart Card</h1>
 
 # No Longer Maintained

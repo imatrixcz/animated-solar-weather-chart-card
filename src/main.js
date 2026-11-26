@@ -1399,3 +1399,6 @@ window.customCards.push({
   preview: true,
   documentationURL: "https://github.com/mlamberts78/weather-chart-card",
 });
+
+import './solar-chart-card.js';
+import './solar-dots-card.js';
