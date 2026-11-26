@@ -3,6 +3,8 @@
 [![GitHub release](https://img.shields.io/github/v/release/imatrixcz/weather-chart-card?style=flat-square)](https://github.com/imatrixcz/weather-chart-card/releases/latest)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE.md)
 
+[![Open your Home Assistant instance and open this repository in the Marketplace / HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=imatrixcz&repository=weather-chart-card&category=plugin)
+
 A weather card with a forecast chart for Home Assistant – with an extra **daily solar forecast**.
 
 This is a maintained fork of [mlamberts78/weather-chart-card](https://github.com/mlamberts78/weather-chart-card), which its author has deprecated. The original card works exactly as before; this fork adds two cards that show how much energy your solar panels are expected to produce each day.
@@ -25,6 +27,12 @@ All three cards are in one file (`weather-chart-card.js`), so one installation i
 ## Installation
 
 ### Home Assistant Marketplace (or HACS)
+
+Click the button to open this repository in your Home Assistant, then press **Install**:
+
+[![Open your Home Assistant instance and open this repository in the Marketplace / HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=imatrixcz&repository=weather-chart-card&category=plugin)
+
+Or add it manually:
 
 1. Open **Marketplace** (or HACS) → **Add from link** / **Custom repositories**.
 2. Enter `https://github.com/imatrixcz/weather-chart-card` (type *Dashboard* / *Lovelace*).
