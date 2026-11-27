@@ -4,6 +4,9 @@
   if (customElements.get('weather-solar-dots-card')) return;
   const Base = customElements.get('animated-solar-weather-chart-card');
   class WeatherSolarChartCard extends Base {
+    setConfig(config) {
+      super.setConfig({ attributes_layout: 'grid', ...config });
+    }
     set hass(value) {
       super.hass = value;
       const signature = JSON.stringify(this.solarDays());
