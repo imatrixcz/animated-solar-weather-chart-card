@@ -7,7 +7,7 @@
 
 An animated weather card with a forecast chart for Home Assistant – with an extra **daily solar forecast**.
 
-This is a maintained fork of [mlamberts78/weather-chart-card](https://github.com/mlamberts78/weather-chart-card), which its author has deprecated. The original card works exactly as before; this fork adds two cards that show how much energy your solar panels are expected to produce each day.
+This is a maintained fork of [mlamberts78/weather-chart-card](https://github.com/mlamberts78/weather-chart-card), which its author has deprecated. The original card is included as `custom:animated-solar-weather-chart-card`; this fork adds two cards that show how much energy your solar panels are expected to produce each day.
 
 | `weather-solar-dots-card` | `weather-solar-chart-card` |
 | :---: | :---: |
@@ -20,7 +20,7 @@ All three cards are in one file (`weather-chart-card.js`), so one installation i
 
 | Card | What it shows |
 | --- | --- |
-| `custom:weather-chart-card` | The original weather card with chart. |
+| `custom:animated-solar-weather-chart-card` | The original weather card with chart (registered under its own name so it can be installed next to other forks). |
 | `custom:weather-solar-dots-card` | Weather card + 1–5 dots per day by expected solar production. |
 | `custom:weather-solar-chart-card` | Weather card + daily solar forecast drawn as a line in the chart. |
 
@@ -38,7 +38,7 @@ Or add it manually:
 2. Enter `https://github.com/imatrixcz/animated-solar-weather-chart-card` (type *Dashboard* / *Lovelace*).
 3. Install **Animated Solar Weather Chart Card**. The dashboard resource is added automatically.
 
-If you used the original `mlamberts78/weather-chart-card`, uninstall it first – this package already contains it.
+If you used the original `mlamberts78/weather-chart-card`, uninstall it first – this package already contains it. Cards with `type: custom:weather-chart-card` must be changed to `type: custom:animated-solar-weather-chart-card`.
 
 ### Manual
 
@@ -46,7 +46,7 @@ Copy `dist/weather-chart-card.js` (and the `icons`, `icons2` folders for animate
 
 ## Solar forecast
 
-Both solar cards accept every option of `weather-chart-card` plus:
+Both solar cards accept every option of `animated-solar-weather-chart-card` plus:
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -103,7 +103,7 @@ These options work in all three cards.
 
 | Name                  | Type    | Default                  | Description                                                                                        |
 | ----------------------| ------- | -------------------------|--------------------------------------------------------------------------------------------------- |
-| type                  | string  | **Required**             | Should be `custom:weather-chart-card`.                                                             |
+| type                  | string  | **Required**             | Should be `custom:animated-solar-weather-chart-card`.                                              |
 | entity                | string  | **Required**             | An entity_id with the `weather` domain.                                                            |
 | temp                  | string  | none                     | An entity_id for a custom temperature sensor.                                                      |
 | press                 | string  | none                     | An entity_id for a custom pressure sensor.                                                         |
@@ -187,7 +187,7 @@ Icons must be SVG files named after the weather conditions listed in [`src/const
 Chart only:
 
 ```yaml
-type: custom:weather-chart-card
+type: custom:animated-solar-weather-chart-card
 entity: weather.forecast_home
 show_main: false
 show_attributes: false
@@ -199,7 +199,7 @@ forecast:
 Hourly forecast with custom units:
 
 ```yaml
-type: custom:weather-chart-card
+type: custom:animated-solar-weather-chart-card
 entity: weather.forecast_home
 forecast:
   type: hourly

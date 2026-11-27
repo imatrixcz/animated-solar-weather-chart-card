@@ -13,10 +13,18 @@ import {Chart, registerables} from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 Chart.register(...registerables, ChartDataLabels);
 
+// Animated icons ship next to this file (dist/icons, dist/icons2); resolve them from the script URL.
+const CARD_BASE_URL = (() => {
+  try { throw new Error(); } catch (e) {
+    const m = String(e.stack || '').match(/(https?:\/\/[^\s)'"]+?\.js)/);
+    return m ? m[1].replace(/[^/]+$/, '') : '/hacsfiles/animated-solar-weather-chart-card/';
+  }
+})();
+
 class WeatherChartCard extends LitElement {
 
 static getConfigElement() {
-  return document.createElement("weather-chart-card-editor");
+  return document.createElement("animated-solar-weather-chart-card-editor");
 }
 
 static getStubConfig(hass, unusedEntities, allEntities) {
@@ -124,9 +132,7 @@ setConfig(config) {
 
   cardConfig.units.speed = config.speed ? config.speed : cardConfig.units.speed;
 
-  this.baseIconPath = cardConfig.icon_style === 'style2' ?
-    'https://cdn.jsdelivr.net/gh/mlamberts78/weather-chart-card/dist/icons2/':
-    'https://cdn.jsdelivr.net/gh/mlamberts78/weather-chart-card/dist/icons/' ;
+  this.baseIconPath = CARD_BASE_URL + (cardConfig.icon_style === 'style2' ? 'icons2/' : 'icons/');
 
   this.config = cardConfig;
   if (!config.entity) {
@@ -1447,13 +1453,13 @@ renderLastUpdated() {
   }
 }
 
-customElements.define('weather-chart-card', WeatherChartCard);
+if (!customElements.get('animated-solar-weather-chart-card')) customElements.define('animated-solar-weather-chart-card', WeatherChartCard);
 
 window.customCards = window.customCards || [];
 window.customCards.push({
-  type: "weather-chart-card",
-  name: "Weather Chart Card",
-  description: "A custom weather card with chart.",
+  type: "animated-solar-weather-chart-card",
+  name: "Animated Solar Weather Chart Card",
+  description: "Animated weather card with forecast chart.",
   preview: true,
   documentationURL: "https://github.com/imatrixcz/animated-solar-weather-chart-card",
 });

@@ -1666,7 +1666,7 @@ class WeatherChartCardEditor extends s {
     `;
   }
 }
-customElements.define("weather-chart-card-editor", WeatherChartCardEditor);
+if (!customElements.get("animated-solar-weather-chart-card-editor")) customElements.define("animated-solar-weather-chart-card-editor", WeatherChartCardEditor);
 
 /**
  * @license
@@ -17788,10 +17788,18 @@ var plugin = {
 
 Chart.register(...registerables, plugin);
 
+// Animated icons ship next to this file (dist/icons, dist/icons2); resolve them from the script URL.
+const CARD_BASE_URL = (() => {
+  try { throw new Error(); } catch (e) {
+    const m = String(e.stack || '').match(/(https?:\/\/[^\s)'"]+?\.js)/);
+    return m ? m[1].replace(/[^/]+$/, '') : '/hacsfiles/animated-solar-weather-chart-card/';
+  }
+})();
+
 class WeatherChartCard extends s {
 
 static getConfigElement() {
-  return document.createElement("weather-chart-card-editor");
+  return document.createElement("animated-solar-weather-chart-card-editor");
 }
 
 static getStubConfig(hass, unusedEntities, allEntities) {
@@ -17899,9 +17907,7 @@ setConfig(config) {
 
   cardConfig.units.speed = config.speed ? config.speed : cardConfig.units.speed;
 
-  this.baseIconPath = cardConfig.icon_style === 'style2' ?
-    'https://cdn.jsdelivr.net/gh/mlamberts78/weather-chart-card/dist/icons2/':
-    'https://cdn.jsdelivr.net/gh/mlamberts78/weather-chart-card/dist/icons/' ;
+  this.baseIconPath = CARD_BASE_URL + (cardConfig.icon_style === 'style2' ? 'icons2/' : 'icons/');
 
   this.config = cardConfig;
   if (!config.entity) {
@@ -19222,22 +19228,22 @@ renderLastUpdated() {
   }
 }
 
-customElements.define('weather-chart-card', WeatherChartCard);
+if (!customElements.get('animated-solar-weather-chart-card')) customElements.define('animated-solar-weather-chart-card', WeatherChartCard);
 
 window.customCards = window.customCards || [];
 window.customCards.push({
-  type: "weather-chart-card",
-  name: "Weather Chart Card",
-  description: "A custom weather card with chart.",
+  type: "animated-solar-weather-chart-card",
+  name: "Animated Solar Weather Chart Card",
+  description: "Animated weather card with forecast chart.",
   preview: true,
   documentationURL: "https://github.com/imatrixcz/animated-solar-weather-chart-card",
 });
 
 /* Solar forecast line extension for weather-chart-card (imatrixcz fork). */
 (async () => {
-  await customElements.whenDefined('weather-chart-card');
+  await customElements.whenDefined('animated-solar-weather-chart-card');
   if (customElements.get('weather-solar-chart-card')) return;
-  const Base = customElements.get('weather-chart-card');
+  const Base = customElements.get('animated-solar-weather-chart-card');
   class WeatherSolarChartCard extends Base {
     setConfig(config) {
       super.setConfig({ attributes_layout: 'grid', ...config });
@@ -19320,9 +19326,9 @@ window.customCards.push({
 
 /* Solar forecast dots extension for weather-chart-card (imatrixcz fork). */
 (async () => {
-  await customElements.whenDefined('weather-chart-card');
+  await customElements.whenDefined('animated-solar-weather-chart-card');
   if (customElements.get('weather-solar-dots-card')) return;
-  const Base = customElements.get('weather-chart-card');
+  const Base = customElements.get('animated-solar-weather-chart-card');
   class WeatherSolarChartCard extends Base {
     setConfig(config) {
       super.setConfig({ attributes_layout: 'grid', ...config });

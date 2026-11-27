@@ -801,4 +801,4 @@ class WeatherChartCardEditor extends LitElement {
     `;
   }
 }
-customElements.define("weather-chart-card-editor", WeatherChartCardEditor);
+if (!customElements.get("animated-solar-weather-chart-card-editor")) customElements.define("animated-solar-weather-chart-card-editor", WeatherChartCardEditor);

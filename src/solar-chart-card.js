@@ -1,8 +1,8 @@
 /* Solar forecast line extension for weather-chart-card (imatrixcz fork). */
 (async () => {
-  await customElements.whenDefined('weather-chart-card');
+  await customElements.whenDefined('animated-solar-weather-chart-card');
   if (customElements.get('weather-solar-chart-card')) return;
-  const Base = customElements.get('weather-chart-card');
+  const Base = customElements.get('animated-solar-weather-chart-card');
   class WeatherSolarChartCard extends Base {
     set hass(value) {
       super.hass = value;
